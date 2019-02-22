@@ -1,8 +1,15 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+
+import { basic } from "./actions/index";
+
+import logo from "./logo.svg";
+import "./App.css";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.basic("max");
+  }
   render() {
     return (
       <div className="App">
@@ -17,12 +24,21 @@ class App extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            You got redux, & hot reloading. Hello {this.props.helloWorld}
           </a>
         </header>
       </div>
     );
   }
 }
+const mapStateToProps = state => ({
+  helloWorld: state.basic.hello
+});
+const mapDispatchToProps = dispatch => ({
+  basic: greeting => dispatch(basic(greeting))
+});
 
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
